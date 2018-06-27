@@ -9,13 +9,13 @@ services:
   rundeck-oss:
     build: rundeck
     ports:
-     - "44440:4440"
+     - "4440:4440"
      - "22"
     links:
       - ssh
       - mysql
     environment:
-      - RUNDECK_URL=http://localhost:44440
+      - RUNDECK_URL=http://localhost:4440
       - CONFIG_SCRIPT_PRESTART=scripts/database
       - CONFIG_SCRIPT_POSTSTART=scripts/import_project
       - DATABASE_DRIVER=com.mysql.jdbc.Driver

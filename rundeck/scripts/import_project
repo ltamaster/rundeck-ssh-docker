@@ -10,7 +10,7 @@ RUNDECK_ADMIN_PASSWORD=${RUNDECK_ADMIN_PASSWORD:-admin}
 
 export RD_USER=admin
 export RD_PASSWORD=$RUNDECK_ADMIN_PASSWORD
-export RD_URL=$RUNDECK_URL
+export RD_URL=http://localhost:4440
 export RD_COLOR=0
 export RD_OPTS="-Dfile.encoding=utf-8"
 export RD_HTTP_TIMEOUT=300
