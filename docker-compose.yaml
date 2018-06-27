@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  ssh:
+    build: ssh
+    ports:
+      - "22"
+
+  rundeck-oss:
+    build: rundeck
+    ports:
+     - "44440:4440"
+     - "22"
+    links:
+      - ssh
+      - mysql
+    environment:
+      - RUNDECK_URL=http://localhost:44440
+      - CONFIG_SCRIPT_PRESTART=scripts/database
+      - CONFIG_SCRIPT_POSTSTART=scripts/import_project
+      - DATABASE_DRIVER=com.mysql.jdbc.Driver
+      - DATABASE_URL=jdbc:mysql://mysql:3306/rundeckdb?autoReconnect=true&useUnicode=yes
+      - DATABASE_USER=rundeck
+      - DATABASE_PASS=rundeck123.
+      - DATABASE_DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+
+  mysql:
+    image: 'mysql:5.6'
+    ports:
+      - '3306:3306'
+    volumes:
+      - 'mysql_data:/var/lib/mysql'
+    environment:
+      - MYSQL_ROOT_PASSWORD=rundeck123.
+      - MYSQL_USER=rundeck
+      - MYSQL_PASSWORD=rundeck123.
+      - MYSQL_DATABASE=rundeckdb
+
+volumes:
+  mysql_data:
+    driver: local
+

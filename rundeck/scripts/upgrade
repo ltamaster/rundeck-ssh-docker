@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+echo "deb https://rundeck.bintray.com/beta-deb stable main" | sudo tee -a /etc/apt/sources.list
+
+apt-get -y update
+apt-get -y upgrade rundeck --allow-unauthenticated
+
+mv /etc/rundeck/rundeck-config.properties.dpkg-old /etc/rundeck/rundeck-config.properties
+
+cat >>/etc/rundeck/rundeck-config.properties <<END
+
+rundeck.log4j.config.file=/etc/rundeck/log4j.properties
+END
+
+service rundeckd restart
+
