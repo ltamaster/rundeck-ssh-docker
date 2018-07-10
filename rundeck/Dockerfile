@@ -66,7 +66,9 @@ ENV USERNAME=rundeck \
 WORKDIR $HOME
 
 RUN echo "rundeck:rundeck" | chpasswd
-RUN usermod -a -G root rundeck
+# set docker GID from docker group host
+#RUN groupmod -g $DOCKER_GID $DOCKER_GNAME
+#RUN usermod -a -G $DOCKER_GNAME rundeck
 
 RUN mkdir -p $HOME
 RUN mkdir -p $HOME/data

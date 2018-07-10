@@ -42,7 +42,24 @@ sed -i 's,grails.serverURL\=.*,grails.serverURL\='${RUNDECK_URL}',g' "$RDPROPS"
 
 cat $RDPROPS
 cat $FWKPROPS
+RUNDECK_ADMIN_PASSWORD=${RUNDECK_ADMIN_PASSWORD:-admin}
 
+mkdir ~/.rd
+cat > ~/.rd/rd.conf <<END
+#export RD_TOKEN=$API_KEY
+export RD_USER=admin
+export RD_PASSWORD=$RUNDECK_ADMIN_PASSWORD
+export RD_URL=http://localhost:4440
+export RD_COLOR=0
+export RD_OPTS="-Dfile.encoding=utf-8"
+export RD_HTTP_TIMEOUT=300
+#export RD_DEBUG=1
+export RD_BYPASS_URL=$RUNDECK_URL
+END
+
+DOCKER_GID=$(stat -c '%g' /var/run/docker.sock)
+groupmod -g "$DOCKER_GID" "$DOCKER_GNAME"
+usermod -aG docker rundeck
 
 service rundeckd start
 
