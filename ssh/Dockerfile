@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:17.10
 
 RUN apt-get update && apt-get install -y openssh-server
 RUN mkdir /var/run/sshd
@@ -22,7 +22,8 @@ RUN adduser --shell /bin/bash --home $HOME --gecos "" --disabled-password $USERN
     addgroup $USERNAME sudo
 
 
+COPY run-ssh.sh /run-ssh.sh
+
+
 EXPOSE 22
-CMD ["/usr/sbin/sshd", "-D"]
-
-
+CMD ["/run-ssh.sh"]

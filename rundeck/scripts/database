@@ -26,6 +26,9 @@ rundeck.projectsStorageType=db
 rundeck.storage.provider.1.type=db
 rundeck.storage.provider.1.path=keys
 
+quartz.props.threadPool.threadCount = 50
+
+
 END
 
 
