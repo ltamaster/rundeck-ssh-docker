@@ -57,9 +57,12 @@ export RD_HTTP_TIMEOUT=300
 export RD_BYPASS_URL=$RUNDECK_URL
 END
 
-DOCKER_GID=$(stat -c '%g' /var/run/docker.sock)
-groupmod -g "$DOCKER_GID" "$DOCKER_GNAME"
-usermod -aG docker rundeck
+if [[ "$CONFIG_SCRIPT_POSTSTART" != "root" ]]; then
+    DOCKER_GID=$(stat -c '%g' /var/run/docker.sock)
+    groupmod -g "$DOCKER_GID" "$DOCKER_GNAME"
+fi
+
+usermod -aG "$DOCKER_GNAME" rundeck
 
 service rundeckd start
 
